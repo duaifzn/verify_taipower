@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  verify_taipower:
+    container_name: verify_taipower
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    entrypoint: trunk serve --address 0.0.0.0
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.remove-api-stripprefix.stripprefix.prefixes=/verify"
+      - "traefik.http.routers.verify_taipower.middlewares=remove-api-stripprefix@docker"
+      - "traefik.http.routers.verify_taipower.rule=Host(`iprooftestverify.com`)&&PathPrefix(`/verify`)"
+      - "traefik.http.routers.verify_taipower.tls=true"
+      - "traefik.http.routers.verify_taipower.tls.certresolver=production"
+    ports:
+      - "3001:8080"
+    networks:
+      - verify_taipower
+networks:
+  verify_taipower:
+    external:
+      name: traefik
