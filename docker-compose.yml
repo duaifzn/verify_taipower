@@ -8,9 +8,7 @@ services:
     entrypoint: trunk serve --address 0.0.0.0
     labels:
       - "traefik.enable=true"
-      - "traefik.http.middlewares.remove-api-stripprefix.stripprefix.prefixes=/taipower"
-      - "traefik.http.routers.verify_taipower.middlewares=remove-api-stripprefix@docker"
-      - "traefik.http.routers.verify_taipower.rule=Host(`iprooftestverify.com`)&&PathPrefix(`/taipower`)"
+      - "traefik.http.routers.verify_taipower.rule=Host(`iprooftestverify.com`)"
       - "traefik.http.routers.verify_taipower.tls=true"
       - "traefik.http.routers.verify_taipower.tls.certresolver=production"
     ports:
