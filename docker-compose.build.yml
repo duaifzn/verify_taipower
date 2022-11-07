@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  verify_taipower:
+    container_name: verify_taipower
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: verify_taipower:1.0.0
