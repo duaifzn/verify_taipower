@@ -3,12 +3,12 @@ use gloo_net::http::Request;
 use gloo_storage::{LocalStorage, Storage};
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
-const CONTRACT_ADDRESS: &'static str = "0x218e7c01b9b4c306b602586d65d02fe132a8f923";
 const ACCOUNT_NAME: &'static str = "admin123@gmail.com";
 const API_URL: &'static str = "http://211.73.81.185";
 
 #[derive(PartialEq, Properties, Clone)]
 pub struct ApiButtonProps {
+    pub contract_address: UseStateHandle<String>,
     pub contract_key_hash: UseStateHandle<String>,
     pub contract_value_hash: UseStateHandle<String>,
     pub contract_msg: UseStateHandle<String>,
@@ -26,6 +26,7 @@ pub struct ApiButtonProps {
 #[function_component(ApiButton)]
 pub fn api_button(
     ApiButtonProps {
+        contract_address,
         contract_key_hash,
         contract_value_hash,
         contract_msg,
@@ -41,6 +42,7 @@ pub fn api_button(
     }: &ApiButtonProps,
 ) -> Html {
     let on_check_click: Callback<MouseEvent> = {
+        let contract_address = contract_address.clone();
         let contract_key_hash = contract_key_hash.clone();
         let contract_value_hash = contract_value_hash.clone();
         let contract_msg = contract_msg.clone();
@@ -54,6 +56,9 @@ pub fn api_button(
         let quantity_class = quantity_class.clone();
         let cert_class = cert_class.clone();
         Callback::from(move |_| {
+            let contract_address = contract_address.clone();
+            let contract_address_clone2 = contract_address.clone();
+            let contract_address_clone3 = contract_address.clone();
             let contract_key_hash = contract_key_hash.clone();
             let contract_value_hash = contract_value_hash.clone();
             let contract_msg = contract_msg.clone();
@@ -67,13 +72,14 @@ pub fn api_button(
             let quantity_class = quantity_class.clone();
             let cert_class = cert_class.clone();
             spawn_local(async move {
+                let contract_address = contract_address.clone();
                 let contract_key_hash = contract_key_hash.clone();
                 let contract_value_hash = contract_value_hash.clone();
                 let auth_token: String = LocalStorage::get("Authorization").unwrap_or_default();
                 let fetch_value_hash: ResponseDto<HashValueDto> = Request::get(&format!(
                     "{}/api/contract/getHash?contract_address={}&account_name={}&key={}",
                     API_URL,
-                    CONTRACT_ADDRESS,
+                    (*contract_address).clone(),
                     ACCOUNT_NAME,
                     (*contract_key_hash).clone()
                 ))
@@ -115,12 +121,13 @@ pub fn api_button(
                 }
             });
             spawn_local(async move {
+                let contract_address = contract_address_clone2.clone();
                 let quantity_key_hash = quantity_key_hash.clone();
                 let auth_token: String = LocalStorage::get("Authorization").unwrap_or_default();
                 let fetch_value_hash: ResponseDto<HashValueDto> = Request::get(&format!(
                     "{}/api/contract/getHash?contract_address={}&account_name={}&key={}",
                     API_URL,
-                    CONTRACT_ADDRESS,
+                    (*contract_address).clone(),
                     ACCOUNT_NAME,
                     (*quantity_key_hash).clone()
                 ))
@@ -162,12 +169,13 @@ pub fn api_button(
                 }
             });
             spawn_local(async move {
+                let contract_address = contract_address_clone3.clone();
                 let cert_key_hash = cert_key_hash.clone();
                 let auth_token: String = LocalStorage::get("Authorization").unwrap_or_default();
                 let fetch_value_hash: ResponseDto<HashValueDto> = Request::get(&format!(
                     "{}/api/contract/getHash?contract_address={}&account_name={}&key={}",
                     API_URL,
-                    CONTRACT_ADDRESS,
+                    (*contract_address).clone(),
                     ACCOUNT_NAME,
                     (*cert_key_hash).clone()
                 ))

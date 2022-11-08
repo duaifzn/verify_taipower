@@ -1,29 +1,14 @@
 use crate::dto::request_dto::LoginDto;
 use crate::dto::response_dto::{TokenDto, ResponseDto};
 use crate::component::app::Route;
+use crate::util::on_input_text::on_input_text;
 use gloo_net::http::Request;
 use gloo_storage::{LocalStorage, Storage};
-use wasm_bindgen::{JsCast, UnwrapThrowExt};
 use wasm_bindgen_futures::spawn_local;
-use web_sys::{Event, HtmlInputElement, InputEvent};
 use yew::prelude::*;
 use yew_router::prelude::{use_history, AnyHistory, History};
 
-const CONTRACT_ADDRESS: &'static str = "0x218e7c01b9b4c306b602586d65d02fe132a8f923";
-const ACCOUNT_NAME: &'static str = "admin123@gmail.com";
 const API_URL: &'static str = "http://211.73.81.185";
-
-fn on_input_text(state: UseStateHandle<String>) -> Callback<InputEvent> {
-    let state = state.clone();
-    Callback::from(move |e: InputEvent| {
-        let state = state.clone();
-        let event: Event = e.dyn_into().unwrap_throw();
-        let event_target = event.target().unwrap_throw();
-        let target: HtmlInputElement = event_target.dyn_into().unwrap_throw();
-        //web_sys::console::log_1(&target.value().into());
-        state.set(target.value());
-    })
-}
 
 fn login_api(
     email: UseStateHandle<String>,
